@@ -18,8 +18,6 @@ limine.workspace = true
 lazy_static.workspace = true
 spin.workspace = true
 seq-macro.workspace = true
-align-address = "0.3.0"
-bitfield = "0.19.4"
 
 [profile.dev]
 panic = "abort"

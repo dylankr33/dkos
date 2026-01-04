@@ -1,6 +1,7 @@
 #![no_std]
 #![no_main]
 #![feature(abi_x86_interrupt)]
+#![feature(const_default)]
 
 use core::arch::asm;
 use limine::{
@@ -10,12 +11,13 @@ use limine::{
 use uart_16550::SerialPort;
 
 use crate::{
-  arch::x86_64::mem::{PML4, init_paging},
+  mem::pmm::{PMM, Pmm},
   requests::{BASE_REVISION, HHDM_RESPONSE, MEMORY_MAP_RESPONSE, PAGING_MODE_REQUEST},
 };
 
 mod arch;
 mod fbcon;
+mod mem;
 mod requests;
 
 const SERIAL_IO_PORT: u16 = 0x3F8;
@@ -56,7 +58,9 @@ unsafe extern "C" fn kmain() -> ! {
     arch::x86_64::gdt::init_gdt();
     arch::x86_64::idt::init_idt();
   }
-
+  for entry in MEMORY_MAP_RESPONSE.entries() {
+    println!("0x{:x}", entry.base + HHDM_RESPONSE.offset());
+  }
   hcf();
 }
 
