@@ -16,20 +16,20 @@ lazy_static! {
   };
 }
 
-// Print macro.
+/// Print macro.
 #[macro_export]
 macro_rules! print {
     ($($arg:tt)*) => ($crate::fbcon::_print(format_args!($($arg)*)));
 }
 
-// Print line macro.
+/// Print line macro.
 #[macro_export]
 macro_rules! println {
     () => ($crate::print!("\n"));
     ($($arg:tt)*) => ($crate::print!("{}\n", format_args!($($arg)*)));
 }
 
-// Print function for macros.
+/// Print function for macros.
 #[doc(hidden)]
 pub fn _print(args: fmt::Arguments) {
   use core::fmt::Write;
