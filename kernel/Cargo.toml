@@ -1,25 +1,24 @@
 [package]
 name = "kernel"
-version.workspace = true
-edition.workspace = true
+version = "0.1.0"
+edition = "2024"
 
 [[bin]]
 name = "kernel"
 test = false
+doctest = false
 bench = false
 
 [build-dependencies]
 cc = "1.0"
 
 [dependencies]
-spleen-font.workspace = true
-uart_16550.workspace = true
-limine.workspace = true
-lazy_static.workspace = true
-spin.workspace = true
-seq-macro.workspace = true
-linked_list_allocator = "0.10.5"
-talc = "4.4.3"
+lazy_static = { version = "1.5.0", features = ["spin_no_std"]}
+limine = "0.5.0"
+spleen-font = { version = "0.2.0", features = ["s12x24"] }
+uart_16550 = "0.4.0"
+spin = "0.10.0"
+seq-macro = "0.3.6"
 
 [profile.dev]
 panic = "abort"

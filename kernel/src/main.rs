@@ -1,20 +1,17 @@
 #![no_std]
 #![no_main]
 
-extern crate alloc;
 
 use core::arch::asm;
 use limine::paging::Mode;
 use uart_16550::SerialPort;
 
 use crate::{
-  mem::init_heap,
   requests::{BASE_REVISION, PAGING_MODE_REQUEST},
 };
 
 mod arch;
 mod fbcon;
-mod mem;
 mod requests;
 mod util;
 
@@ -50,8 +47,6 @@ unsafe extern "C" fn kmain() -> ! {
     arch::x86_64::gdt::init_gdt();
     arch::x86_64::idt::init_idt();
   }
-  init_heap();
-
   hcf();
 }
 
