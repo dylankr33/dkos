@@ -38,30 +38,26 @@
       pkgs,
       pkgsCross,
     }:
-    let
-      kernel =
-        arch:
-        crane.buildPackage {
-          pname = "kernel";
-          CARGO_REBASE_UNSTABLE_PROC_MACRO = "1";
-          CARGO_BUILD_TARGET = "${arch}-unknown-none";
-          doCheck = false;
-          src =
-            let
-              unfilteredRoot = ./kernel;
-            in
-            pkgs.lib.fileset.toSource {
-              root = unfilteredRoot;
-              fileset = pkgs.lib.fileset.unions [
-                (crane.fileset.commonCargoSources unfilteredRoot)
-                (pkgs.lib.fileset.fileFilter (file: file.hasExt "s") unfilteredRoot)
-                (pkgs.lib.fileset.fileFilter (file: file.hasExt "ld") unfilteredRoot)
-              ];
-            };
-        };
-    in
+
     {
-      packages.x86_64-linux.dkos-x86_64 = kernel "x86_64";
+      packages.x86_64-linux.dkos-x86_64 = crane.buildPackage {
+        pname = "kernel";
+        cargoExtraArgs = "-Zbuild-std=core,compiler_builtins";
+        doCheck = false;
+        strictDeps = true;
+        src =
+          let
+            unfilteredRoot = ./kernel;
+          in
+          pkgs.lib.fileset.toSource {
+            root = unfilteredRoot;
+            fileset = pkgs.lib.fileset.unions [
+              (crane.fileset.commonCargoSources unfilteredRoot)
+              (pkgs.lib.fileset.fileFilter (file: file.hasExt "s") unfilteredRoot)
+              (pkgs.lib.fileset.fileFilter (file: file.hasExt "ld") unfilteredRoot)
+            ];
+          };
+      };
 
       devShells.x86_64-linux.default = crane.devShell {
         packages = with pkgs; [
