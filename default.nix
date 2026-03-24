@@ -101,7 +101,7 @@
               mkdir -p iso_root/EFI/BOOT
               cp -v ${limine}/limine-bios.sys ${limine}/limine-bios-cd.bin ${limine}/limine-uefi-cd.bin iso_root/boot/limine/
               cp -v ${limine}/BOOTX64.EFI  ${limine}/BOOTIA32.EFI iso_root/EFI/BOOT/
-              xorriso -as mkisofs -R -r -J -b boot/limine/limine-bios-cd.bin \
+              xorriso -as mkisofs -R -J -b boot/limine/limine-bios-cd.bin \
                 -no-emul-boot -boot-load-size 4 -boot-info-table -hfsplus \
                 -apm-block-size 2048 --efi-boot boot/limine/limine-uefi-cd.bin \
                 -efi-boot-part --efi-boot-image --protective-msdos-label \
@@ -135,9 +135,9 @@
               xorriso -as mkisofs\
                 --efi-boot boot/limine/limine-uefi-cd.bin \
                 -efi-boot-part --efi-boot-image --protective-msdos-label \
-                iso_root -o $out/dkos-x86_64.iso
-              ${outputs.packages.x86_64-linux.limine}/bin/limine bios-install $out/dkos-x86_64.iso
-              chmod 0777 $out/dkos-x86_64.iso
+                iso_root -o $out/dkos-riscv64.iso
+              ${outputs.packages.x86_64-linux.limine}/bin/limine bios-install $out/dkos-riscv64.iso
+              chmod 0777 $out/dkos-riscv64.iso
             '';
             buildInputs = [
               pkgs.xorriso
@@ -160,17 +160,13 @@
         run-x86_64 = {
           type = "app";
           program = "${pkgs.writeShellScriptBin "runner" ''
-            cp ${outputs.packages.x86_64-linux.dkos-x86_64}/dkos-x86_64.iso .
-            chmod 0777 dkos-x86_64.iso
-            exec ${pkgs.qemu}/bin/qemu-system-x86_64 "dkos-x86_64.iso"
+            exec ${pkgs.qemu}/bin/qemu-system-x86_64 -snapshot "${outputs.packages.x86_64-linux.dkos-x86_64}/dkos-x86_64.iso"
           ''}/bin/runner";
         };
         run-riscv64 = {
           type = "app";
           program = "${pkgs.writeShellScriptBin "runner" ''
-            cp ${outputs.packages.x86_64-linux.dkos-riscv64}/dkos-riscv64.iso .
-            chmod 0777 dkos-riscv64.iso
-            exec ${pkgs.qemu}/bin/qemu-system-x86_64 "dkos-riscv64.iso"
+            exec ${pkgs.qemu}/bin/qemu-system-riscv64 "${outputs.packages.x86_64-linux.dkos-riscv64}/dkos-riscv64.iso"
           ''}/bin/runner";
         };
       };
