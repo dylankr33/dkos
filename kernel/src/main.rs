@@ -4,10 +4,9 @@
 
 use core::arch::asm;
 use limine::paging::Mode;
-use uart_16550::SerialPort;
 
 use crate::{
-  requests::{BASE_REVISION, PAGING_MODE_REQUEST},
+  requests::{BASE_REVISION},
 };
 
 mod arch;
@@ -37,10 +36,6 @@ fn hcf() -> ! {
 #[unsafe(no_mangle)]
 unsafe extern "C" fn kmain() -> ! {
   assert!(BASE_REVISION.is_supported());
-  assert!(PAGING_MODE_REQUEST.get_response().unwrap().mode() == Mode::MIN);
-
-  let mut serial_port = unsafe { SerialPort::new(SERIAL_IO_PORT) };
-  serial_port.init();
   println!("dkos 0.1.0");
   #[cfg(target_arch = "x86_64")]
   {

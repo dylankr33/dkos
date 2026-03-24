@@ -1,5 +1,19 @@
 {
   "pins": {
+    "Limine": {
+      "type": "Git",
+      "repository": {
+        "type": "Forgejo",
+        "server": "https://codeberg.org/",
+        "owner": "Limine",
+        "repo": "Limine"
+      },
+      "branch": "v10.x-binary",
+      "submodules": false,
+      "revision": "7a9013f305de0bea1f6310e76e7baba30499fef0",
+      "url": "https://codeberg.org/Limine/Limine/archive/7a9013f305de0bea1f6310e76e7baba30499fef0.tar.gz",
+      "hash": "sha256-TCOBE9wQogiePFbq/wt9+mtJArwjt5EphcZOZJE9F7o="
+    },
     "crane": {
       "type": "GitRelease",
       "repository": {
@@ -31,9 +45,9 @@
       },
       "branch": "master",
       "submodules": false,
-      "revision": "6a031966eab3bfaa19be9e261eed5b8a79c04b18",
-      "url": "https://github.com/oxalica/rust-overlay/archive/6a031966eab3bfaa19be9e261eed5b8a79c04b18.tar.gz",
-      "hash": "sha256-SYp8NyzwfCO3Guqmu9hPRHR1hwESlQia5nNz3lYo2qA="
+      "revision": "dc00324a2438762582b49954373112b8eab29cab",
+      "url": "https://github.com/oxalica/rust-overlay/archive/dc00324a2438762582b49954373112b8eab29cab.tar.gz",
+      "hash": "sha256-D8OOwvq3zDDCtIhMcNueb9tGSZaZUanKpWDleRgQ80U="
     },
     "sprinkles": {
       "type": "Git",
